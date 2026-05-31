@@ -1,0 +1,55 @@
+/* Styling for applied jobs */
+.job-item.applied-job {
+    background-color: #00fb046f !important;
+    border: 2px solid #28a74696 !important;
+    opacity: 0.8;
+    position: relative;
+}
+
+/* Badge indicator for applied jobs */
+.job-item.applied-job::before {
+    content: "Applied ✅";
+    display: block;
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* New Sidebar Menu */
+.matrix-job-tracker-sidebar {
+    position: fixed;
+    top: 20%;
+    left: 20px; /* Positions it on the left side of the screen */
+    width: 220px;
+    background-color: #f0f0f04e;
+    border: 2px solid #28a745;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 15px;
+    z-index: 999999; /* Ensures it stays on top of everything */
+    font-family: Arial, sans-serif;
+    direction: rtl; /* Matches Hebrew layout */
+}
+
+.matrix-sidebar-status {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.matrix-sidebar-stats {
+    font-size: 13px;
+    color: white;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+    margin-top: 8px;
+}

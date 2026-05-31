@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Matrix Job Tracker",
+  "version": "1.0",
+  "description": "Marks job applications you already applied to on Matrix jobs site.",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.matrix.co.il/jobs/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ]
+    }
+  ]
+}
