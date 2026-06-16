@@ -61,10 +61,19 @@ function markAndFilterJobs() {
 
   stopObserver();
 
-  // Strict experience regex matching patterns like "3 שנות ניסיון"
-  const expRegex = /(\d+)\s*(שנות|שנה|שנים)\s*([^0-9\r\n]{0,30})\s*נ[י]?סיון/i;
+  // Matches numbers followed by years/experience (e.g., "3 שנות", "4 שנים"). Number must be isolated (\b or spaces).
+  const expRegexStandard =
+    /(?:^|[\s,.\-+])([3-9]|\d{2,})\s*(?:שנות|שנה|שנים|ש"נ)/i;
 
-  // Targeted management keywords (removed generic "מוביל" to prevent filtering "leading company")
+  // Matches experience keywords followed closely by isolated numbers (e.g., "ניסיון של 3", "ניסיון מעל 4"). Max 15 chars between them.
+  const expRegexReverse =
+    /(?:נ[י]?סיון|שנות|שנים)[^0-9\r\n]{0,15}(?:^|[\s,.\-+])([3-9]|\d{2,})(?:$|[\s,.\-+])/i;
+
+  // Matches explicit plus signs attached to high numbers (e.g., "3+", "+4"), strictly avoiding alphanumeric attachments like MongoDB3+
+  const plusSignRegex =
+    /(?:^|[\s,.\-+])(?:([3-9])\s*\+|\+\s*([3-9]))(?:$|[\s,.\-+])/i;
+
+  // Targeted management keywords
   const leaderKeywords = [
     "leader",
     "ראש צוות",
@@ -78,7 +87,7 @@ function markAndFilterJobs() {
   const allowedLocations = ["מרכז", "השפלה", "גוש דן", "השרון"];
 
   console.log(
-    `%c[Matrix Tracker] Scanning ${jobItems.length} jobs...`,
+    `%c[Matrix Tracker] Scanning ${jobItems.length} jobs with isolated number extraction...`,
     "color: #00ff00; font-weight: bold;",
   );
 
@@ -145,24 +154,48 @@ function markAndFilterJobs() {
         }
       }
 
-      // 4. Experience Filter (Hides 3+ years requirements)
+      // 4. Advanced Experience Filter (Strictly blocks >2 years while ignoring library names)
       if (!shouldHide) {
-        const match = targetText.match(expRegex);
-        if (match) {
-          const years = parseInt(match[1], 10);
-          if (years >= 3) {
-            shouldHide = true;
-            hideReason = `Experience requirement high: ${years} years`;
+        // Check Pattern A: Explicit isolated 3+, 4+, 5+ indicators
+        if (plusSignRegex.test(targetText)) {
+          shouldHide = true;
+          hideReason = "High experience explicit plus sign detected (+3 / 4+)";
+        }
+
+        // Check Pattern B: Standard layout "X years of experience" with isolated numbers
+        if (!shouldHide) {
+          const matchStandard = targetText.match(expRegexStandard);
+          if (matchStandard) {
+            const years = parseFloat(matchStandard[1]);
+            if (years > 2) {
+              shouldHide = true;
+              hideReason = `Standard experience high: ${years} years`;
+            }
           }
         }
 
+        // Check Pattern C: Close proximity reverse layout
+        if (!shouldHide) {
+          const matchReverse = targetText.match(expRegexReverse);
+          if (matchReverse) {
+            const years = parseFloat(matchReverse[1]);
+            if (years > 2) {
+              shouldHide = true;
+              hideReason = `Reverse experience layout high: ${years} years`;
+            }
+          }
+        }
+
+        // Check Pattern D: Text-based fallback checks for explicit numbers written out in Hebrew
         if (
           !shouldHide &&
-          (targetText.includes("חמש שנות") ||
+          (targetText.includes("שלוש שנות") ||
+            targetText.includes("שלוש שנים") ||
+            targetText.includes("ארבע שנות") ||
+            targetText.includes("ארבע שנים") ||
+            targetText.includes("חמש שנות") ||
             targetText.includes("חמש שנים") ||
-            targetText.includes("למעלה מחמש") ||
-            targetText.includes("שלוש שנות") ||
-            targetText.includes("שלוש שנים"))
+            targetText.includes("למעלה מחמש"))
         ) {
           shouldHide = true;
           hideReason = "Text-based high experience keyword found";
