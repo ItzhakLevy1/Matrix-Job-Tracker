@@ -1,55 +1,70 @@
-/* Styling for applied jobs */
-.job-item.applied-job {
-    background-color: #00fb046f !important;
-    border: 2px solid #28a74696 !important;
-    opacity: 0.8;
-    position: relative;
-}
-
-/* Badge indicator for applied jobs */
-.job-item.applied-job::before {
-    content: "Applied ✅";
-    display: block;
-    background-color: #28a745;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    padding: 5px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-/* New Sidebar Menu */
+/* Sidebar container - fixed to the right side, expanded layout, black theme with green border */
 .matrix-job-tracker-sidebar {
     position: fixed;
-    top: 20%;
-    left: 20px; /* Positions it on the left side of the screen */
-    width: 220px;
-    background-color: #f0f0f04e;
-    border: 2px solid #28a745;
+    top: 20px;
+    right: 20px; 
+    width: 170px; /* Expanded width as requested */
+    background-color: #000000; 
+    border: 2px solid #00ff00; 
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    padding: 15px;
-    z-index: 999999; /* Ensures it stays on top of everything */
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 999999; 
     font-family: Arial, sans-serif;
-    direction: rtl; /* Matches Hebrew layout */
+    direction: rtl; 
+    text-align: right;
+    box-sizing: border-box;
 }
 
+/* Sidebar status text line */
 .matrix-sidebar-status {
-    font-size: 16px;
     font-weight: bold;
-    color: white;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    font-size: 15px; /* Increased font size to 15px */
+    color: #ffffff; 
+    margin-bottom: 5px;
+    line-height: 1.4;
 }
 
-.matrix-sidebar-stats {
-    font-size: 13px;
-    color: white;
-    border-top: 1px solid #eee;
-    padding-top: 8px;
-    margin-top: 8px;
+/* Sidebar informative description lines */
+.matrix-sidebar-info {
+    font-size: 15px; /* Increased font size to 15px */
+    color: #cccccc; 
+    line-height: 1.4;
+}
+
+/* Subtle dividing horizontal line for dark theme background */
+.matrix-sidebar-divider {
+    border: 0;
+    border-top: 1px solid #333333; 
+    margin: 8px 0;
+}
+
+/* Highlight style for job items that have been applied to - updated to solid dark green */
+.job-item.applied-job {
+    background-color: #01850c !important; /* Custom dark green background */
+    border: 2px solid #00ff00 !important;
+    position: relative; 
+}
+
+/* Force text inside applied job cards to be readable on the new dark green background */
+.job-item.applied-job h2.job-title a,
+.job-item.applied-job p,
+.job-item.applied-job b,
+.job-item.applied-job b.job-areas {
+    color: #ffffff !important;
+}
+
+/* Applied badge layout - positioned inside the top of the job card, styled black & white and sized 2x */
+.job-applied-badge {
+    display: inline-block;
+    background-color: #000000; /* Black background */
+    border: 2px solid #ffffff; /* White border */
+    color: #ffffff; /* White text */
+    font-weight: bold;
+    font-size: 26px; /* Doubled size (from 13px to 26px) */
+    padding: 10px 20px; /* Increased padding to match the 2x scale */
+    border-radius: 6px;
+    margin-bottom: 20px; 
+    font-family: Arial, sans-serif;
+    direction: rtl;
 }
