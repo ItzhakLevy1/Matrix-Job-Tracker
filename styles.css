@@ -68,3 +68,27 @@
     font-family: Arial, sans-serif;
     direction: rtl;
 }
+
+/* Blackout style for filtered out jobs - hides content by blending with background */
+div.job-item.tracker-blackout {
+    background-color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #000000 !important;
+    pointer-events: none !important; /* Prevents clicking on hidden elements */
+}
+
+/* Force all internal text elements, links, badges, and headers to become black */
+div.job-item.tracker-blackout *,
+div.job-item.tracker-blackout h2.job-title a,
+div.job-item.tracker-blackout p,
+div.job-item.tracker-blackout b,
+div.job-item.tracker-blackout span,
+div.job-item.tracker-blackout div,
+div.job-item.tracker-blackout button,
+div.job-item.tracker-blackout i {
+    color: #000000 !important;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+}
